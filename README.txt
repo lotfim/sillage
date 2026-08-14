@@ -21,6 +21,7 @@ Anonymous visitors are never logged. The WordPress admin area, archives, search 
 
 * Visit log: user, email, IP (with geolocation lookup link), content, entry date, estimated exit date
 * Filters with autocomplete: by user, by content, by date range
+* Analytics dashboard: visits over time, top contents and users (admin)
 * Export the filtered dataset to CSV, Excel, and PDF
 * IP anonymization and configurable data retention
 * WordPress personal data export and erase integration
@@ -38,6 +39,7 @@ Bundled for Excel/PDF export (self-hosted, no CDN):
 * DataTables (MIT)
 * Select2 (MIT)
 * Flatpickr (MIT)
+* Chart.js (MIT)
 
 == Installation ==
 

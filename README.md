@@ -1,8 +1,8 @@
 # Sillage
 
 **GDPR-friendly visit log for WordPress — track which logged-in users
-viewed what, when, and from where — with filters, autocomplete, and
-PDF/CSV/Excel export.**
+viewed what, when, and from where — with filters, autocomplete,
+PDF/CSV/Excel export, and an admin analytics dashboard.**
 
 > ⚠️ **This README is a living document.** Every change that adds a
 > setting, a REST endpoint, a database column/table, or a new dependency
@@ -30,11 +30,12 @@ Anonymous visitors are never logged. wp-admin, archives, search, and
 - Advanced filters with autocomplete: by user, by page/post, by date
   range.
 - Export filtered data to PDF, CSV, and Excel.
+- Analytics dashboard (admin): visits and unique users over time, top
+  contents, top users, breakdown by content type, average visit duration
+  (exit times remain best-effort).
 - GDPR-conscious by design: configurable IP anonymization, automatic
   data purge based on a configurable retention period, WordPress
   personal data export/erase integration.
-- *(Planned — Phase 2)* Analytics dashboard: traffic over time, top
-  pages, per-user activity.
 
 ## Requirements
 
@@ -90,6 +91,7 @@ Namespace: `sillage/v1`
 | `/logs` | GET | `manage_options` | DataTables server-side page of log rows |
 | `/autocomplete/users` | GET | `manage_options` | User search for the admin filter selector |
 | `/autocomplete/pages` | GET | `manage_options` | Content search for the admin filter selector |
+| `/stats` | GET | `manage_options` | Dashboard aggregations (KPIs, series, top lists; never raw rows) |
 
 Filtered file export is an `admin-post.php` action (`sillage_export`),
 not a REST route.
@@ -107,6 +109,7 @@ production):**
 - DataTables (server-side processing mode)
 - Select2 (autocomplete)
 - Flatpickr (date range filters; display format follows the WordPress user locale)
+- Chart.js (analytics dashboard)
 
 **CSS:**
 - Tailwind CSS v3 (compiled, `sil-` prefix)
@@ -139,8 +142,8 @@ See `TECH-STACK.md` for the full stack rationale, and
 ## Roadmap
 
 - [x] Phase 1: logging engine, admin list view, filters, export
-- [ ] Phase 2: analytics dashboard (traffic charts, top pages, per-user
-      activity, geographic map, session duration, anomaly detection)
+- [ ] Phase 2: analytics dashboard (specified in `sillage-plugin-specs.txt` §11 — KPIs, time series, top contents/users, by type)
+- [ ] Later: geographic map, anomaly detection, period comparison, dashboard export
 
 ## Privacy / GDPR
 
