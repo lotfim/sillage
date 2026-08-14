@@ -36,6 +36,8 @@ class Sillage_Settings {
 			'ip_anonymization' => false,
 			'retention_days'   => 90,
 			'geoip_base_url'   => 'https://ipinfo.io/',
+			'pdf_company_name' => '',
+			'pdf_show_filters' => false,
 		);
 	}
 
@@ -130,6 +132,26 @@ class Sillage_Settings {
 	}
 
 	/**
+	 * Company name for the PDF title. Empty keeps the default heading.
+	 *
+	 * @since 1.0.0
+	 * @return string
+	 */
+	public static function pdf_company_name(): string {
+		return (string) self::get( 'pdf_company_name', '' );
+	}
+
+	/**
+	 * Whether the PDF should list the active filters.
+	 *
+	 * @since 1.0.0
+	 * @return bool
+	 */
+	public static function pdf_show_filters(): bool {
+		return (bool) self::get( 'pdf_show_filters', false );
+	}
+
+	/**
 	 * Sanitize and persist settings from the admin form.
 	 *
 	 * @since 1.0.0
@@ -144,6 +166,10 @@ class Sillage_Settings {
 
 		$geo                       = isset( $input['geoip_base_url'] ) ? esc_url_raw( (string) $input['geoip_base_url'] ) : '';
 		$current['geoip_base_url'] = '' !== $geo ? trailingslashit( $geo ) : 'https://ipinfo.io/';
+
+		$company                     = isset( $input['pdf_company_name'] ) ? sanitize_text_field( (string) $input['pdf_company_name'] ) : '';
+		$current['pdf_company_name'] = substr( $company, 0, 191 );
+		$current['pdf_show_filters'] = ! empty( $input['pdf_show_filters'] );
 
 		return $current;
 	}

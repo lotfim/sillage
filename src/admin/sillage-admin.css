@@ -33,3 +33,29 @@
 .sillage-wrap table.dataTable {
 	border-collapse: collapse !important;
 }
+
+/* DataTables length <select> fights wp-admin select styling (tall, collapsed). */
+.sillage-wrap div.dt-container .dt-length {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	flex-wrap: wrap;
+}
+
+.sillage-wrap div.dt-container .dt-length select,
+.sillage-wrap div.dt-container select.dt-input {
+	display: inline-block;
+	width: auto;
+	min-width: 4.5rem;
+	height: 30px;
+	min-height: 30px;
+	max-height: 32px;
+	margin: 0 0.25rem;
+	padding: 0 24px 0 8px;
+	line-height: 1.4;
+	vertical-align: middle;
+	box-sizing: border-box;
+	/* Keep WP's SVG chevron only — native appearance adds a second arrow. */
+	appearance: none;
+	-webkit-appearance: none;
+}

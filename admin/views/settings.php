@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $sillage_ip_anon   = ! empty( $settings['ip_anonymization'] );
 $sillage_retention = isset( $settings['retention_days'] ) ? (int) $settings['retention_days'] : 90;
 $sillage_geoip     = isset( $settings['geoip_base_url'] ) ? (string) $settings['geoip_base_url'] : 'https://ipinfo.io/';
+$sillage_company   = isset( $settings['pdf_company_name'] ) ? (string) $settings['pdf_company_name'] : '';
+$sillage_pdf_filt  = ! empty( $settings['pdf_show_filters'] );
 ?>
 <div class="wrap sillage-wrap">
 	<h1><?php echo esc_html__( 'Sillage settings', 'sillage' ); ?></h1>
@@ -58,6 +60,26 @@ $sillage_geoip     = isset( $settings['geoip_base_url'] ) ? (string) $settings['
 					<p class="description">
 						<?php echo esc_html__( 'Used to build the “locate IP” link in the visit log (opened in a new tab). Default: https://ipinfo.io/', 'sillage' ); ?>
 					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">
+					<label for="sillage-pdf-company"><?php echo esc_html__( 'PDF company name', 'sillage' ); ?></label>
+				</th>
+				<td>
+					<input type="text" id="sillage-pdf-company" class="regular-text" maxlength="191" name="<?php echo esc_attr( Sillage_Settings::OPTION_KEY ); ?>[pdf_company_name]" value="<?php echo esc_attr( $sillage_company ); ?>" />
+					<p class="description">
+						<?php echo esc_html__( 'Shown as the PDF title. Leave empty to keep the default “Sillage visit log” heading.', 'sillage' ); ?>
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php echo esc_html__( 'PDF filters', 'sillage' ); ?></th>
+				<td>
+					<label>
+						<input type="checkbox" name="<?php echo esc_attr( Sillage_Settings::OPTION_KEY ); ?>[pdf_show_filters]" value="1" <?php checked( $sillage_pdf_filt ); ?> />
+						<?php echo esc_html__( 'Print the active filters (user, content, date range) at the top of the PDF.', 'sillage' ); ?>
+					</label>
 				</td>
 			</tr>
 		</table>

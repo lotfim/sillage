@@ -219,11 +219,32 @@ class Sillage_Exporter {
 
 		$html  = '<html><head><meta charset="utf-8"><style>';
 		$html .= 'body{font-family:DejaVu Sans,sans-serif;font-size:10px;}';
-		$html .= 'h1{font-size:16px;} table{width:100%;border-collapse:collapse;}';
+		$html .= 'h1{font-size:16px;margin:0 0 4px;} .subtitle{font-size:12px;margin:0 0 8px;color:#444;}';
+		$html .= '.meta,.filters{margin:0 0 10px;} .filters{padding:6px 8px;background:#f3f4f6;border:1px solid #e5e7eb;}';
+		$html .= 'table{width:100%;border-collapse:collapse;}';
 		$html .= 'th,td{border:1px solid #ccc;padding:4px;text-align:left;} th{background:#f3f4f6;}';
 		$html .= '</style></head><body>';
-		$html .= '<h1>' . esc_html__( 'Sillage visit log', 'sillage' ) . '</h1>';
-		$html .= '<p>' . esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ) ) . '</p>';
+
+		$company = Sillage_Settings::pdf_company_name();
+		$heading = __( 'Sillage visit log', 'sillage' );
+
+		if ( '' !== $company ) {
+			$html .= '<h1>' . esc_html( $company ) . '</h1>';
+			$html .= '<p class="subtitle">' . esc_html( $heading ) . '</p>';
+		} else {
+			$html .= '<h1>' . esc_html( $heading ) . '</h1>';
+		}
+
+		$html .= '<p class="meta">' . esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ) ) . '</p>';
+
+		if ( Sillage_Settings::pdf_show_filters() ) {
+			$html .= '<p class="filters"><strong>' . esc_html__( 'Filters', 'sillage' ) . '</strong><br>';
+			foreach ( self::filter_labels( $filters ) as $line ) {
+				$html .= esc_html( $line ) . '<br>';
+			}
+			$html .= '</p>';
+		}
+
 		$html .= '<table><thead><tr>';
 
 		foreach ( self::headers() as $header ) {
@@ -272,6 +293,43 @@ class Sillage_Exporter {
 
 		echo $dompdf->output(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary PDF.
 		exit;
+	}
+
+	/**
+	 * Human-readable filter summary for the PDF header.
+	 *
+	 * @since 1.0.0
+	 * @param array<string, mixed> $filters Sanitized filters.
+	 * @return array<int, string>
+	 */
+	private static function filter_labels( array $filters ): array {
+		$lines = array();
+
+		if ( ! empty( $filters['user_id'] ) ) {
+			$user    = get_userdata( (int) $filters['user_id'] );
+			$label   = $user ? $user->user_nicename . ' (' . $user->user_email . ')' : (string) (int) $filters['user_id'];
+			$lines[] = __( 'User', 'sillage' ) . ': ' . $label;
+		}
+
+		if ( ! empty( $filters['object_id'] ) ) {
+			$title   = get_the_title( (int) $filters['object_id'] );
+			$label   = '' !== $title ? $title : (string) (int) $filters['object_id'];
+			$lines[] = __( 'Content', 'sillage' ) . ': ' . $label;
+		}
+
+		if ( ! empty( $filters['date_from'] ) ) {
+			$lines[] = __( 'From', 'sillage' ) . ': ' . (string) $filters['date_from'];
+		}
+
+		if ( ! empty( $filters['date_to'] ) ) {
+			$lines[] = __( 'To', 'sillage' ) . ': ' . (string) $filters['date_to'];
+		}
+
+		if ( array() === $lines ) {
+			$lines[] = __( 'No filters applied', 'sillage' );
+		}
+
+		return $lines;
 	}
 
 	/**

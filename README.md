@@ -62,6 +62,8 @@ The only automatic deletion is the retention cron (when enabled).
 | IP anonymization | Masks the last octet (IPv4) / trailing bits (IPv6, keep /48) before storing | Off |
 | Data retention (days) | Log rows older than this are purged daily via cron. `0` disables auto-purge | 90 |
 | IP geolocation link base URL | Used to build the "locate IP" link opened in a new tab | `https://ipinfo.io/` |
+| PDF company name | Shown as the PDF title; empty keeps the default heading | (empty) |
+| PDF filters | Print the active filters at the top of the PDF | Off |
 
 ## Database
 
