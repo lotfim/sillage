@@ -1,0 +1,36 @@
+{
+	"name": "lotfim/sillage",
+	"description": "GDPR-friendly visit log for WordPress.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Lotfi Manseur",
+			"homepage": "https://github.com/lotfim"
+		}
+	],
+	"require": {
+		"php": ">=8.3",
+		"dompdf/dompdf": "^3.1",
+		"phpoffice/phpspreadsheet": "^3.9"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"wp-coding-standards/wpcs": "^3.1"
+	},
+	"scripts": {
+		"lint": "php vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lint:fix": "php vendor/squizlabs/php_codesniffer/bin/phpcbf"
+	},
+	"config": {
+		"bin-dir": "vendor/bin",
+		"platform": {
+			"php": "8.3.0"
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"sort-packages": true
+	}
+}

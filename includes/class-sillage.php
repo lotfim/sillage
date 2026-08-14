@@ -1,218 +1,170 @@
 <?php
-
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       https://github.com/lotfim
- * @since      1.0.0
+ * The core plugin class.
  *
  * @package    Sillage
  * @subpackage Sillage/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * The core plugin class.
+ * Loads dependencies and registers hooks.
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
- * @since      1.0.0
- * @package    Sillage
- * @subpackage Sillage/includes
- * @author     Lotfi MANSEUR <lotfi.manseur.tech@gmail.com>
+ * @since 1.0.0
  */
 class Sillage {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
+	 * Hook loader.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Sillage_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @since 1.0.0
+	 * @var Sillage_Loader
 	 */
-	protected $loader;
+	protected Sillage_Loader $loader;
 
 	/**
-	 * The unique identifier of this plugin.
+	 * Plugin slug.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @since 1.0.0
+	 * @var string
 	 */
-	protected $plugin_name;
+	protected string $plugin_name;
 
 	/**
-	 * The current version of the plugin.
+	 * Plugin version.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @since 1.0.0
+	 * @var string
 	 */
-	protected $version;
+	protected string $version;
 
 	/**
-	 * Define the core functionality of the plugin.
+	 * Constructor.
 	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'SILLAGE_VERSION' ) ) {
-			$this->version = SILLAGE_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
+		$this->version     = defined( 'SILLAGE_VERSION' ) ? SILLAGE_VERSION : '1.0.0';
 		$this->plugin_name = 'sillage';
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
-	 * Load the required dependencies for this plugin.
+	 * Load required files.
 	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Sillage_Loader. Orchestrates the hooks of the plugin.
-	 * - Sillage_i18n. Defines internationalization functionality.
-	 * - Sillage_Admin. Defines all hooks for the admin area.
-	 * - Sillage_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since 1.0.0
+	 * @return void
 	 */
-	private function load_dependencies() {
-
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sillage-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sillage-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sillage-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sillage-public.php';
+	private function load_dependencies(): void {
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-loader.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-i18n.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-database.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-settings.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-tracker.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-query.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-rest.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-cron.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-export-format.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-exporter.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-geoip.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-privacy.php';
+		require_once SILLAGE_PLUGIN_DIR . 'admin/class-sillage-admin.php';
+		require_once SILLAGE_PLUGIN_DIR . 'public/class-sillage-public.php';
 
 		$this->loader = new Sillage_Loader();
-
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
+	 * Set up translations.
 	 *
-	 * Uses the Sillage_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since 1.0.0
+	 * @return void
 	 */
-	private function set_locale() {
-
-		$plugin_i18n = new Sillage_i18n();
-
+	private function set_locale(): void {
+		$plugin_i18n = new Sillage_I18n();
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
+	 * Admin hooks.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since 1.0.0
+	 * @return void
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks(): void {
+		$plugin_admin = new Sillage_Admin( $this->plugin_name, $this->version );
+		$plugin_rest  = new Sillage_Rest();
 
-		$plugin_admin = new Sillage_Admin( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'plugins_loaded', 'Sillage_Database', 'maybe_upgrade' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'register_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_assets' );
+		$this->loader->add_action( 'admin_post_sillage_export', $plugin_admin, 'handle_export' );
+		$this->loader->add_action( 'rest_api_init', $plugin_rest, 'register_routes' );
+		$this->loader->add_action( Sillage_Cron::HOOK, 'Sillage_Cron', 'purge' );
+		$this->loader->add_action( 'init', 'Sillage_Cron', 'schedule' );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
+		$this->loader->add_filter( 'wp_privacy_personal_data_exporters', 'Sillage_Privacy', 'register_exporter' );
+		$this->loader->add_filter( 'wp_privacy_personal_data_erasers', 'Sillage_Privacy', 'register_eraser' );
 	}
 
 	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
+	 * Public hooks.
 	 *
-	 * @since    1.0.0
-	 * @access   private
+	 * @since 1.0.0
+	 * @return void
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks(): void {
+		$plugin_public = new Sillage_Public( $this->plugin_name, $this->version );
 
-		$plugin_public = new Sillage_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'template_redirect', 'Sillage_Tracker', 'maybe_log' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
 	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Register hooks with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
+	 * @return void
 	 */
-	public function run() {
+	public function run(): void {
 		$this->loader->run();
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
+	 * Plugin slug.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The name of the plugin.
+	 * @since 1.0.0
+	 * @return string
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name(): string {
 		return $this->plugin_name;
 	}
 
 	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
+	 * Loader.
 	 *
-	 * @since     1.0.0
-	 * @return    Sillage_Loader    Orchestrates the hooks of the plugin.
+	 * @since 1.0.0
+	 * @return Sillage_Loader
 	 */
-	public function get_loader() {
+	public function get_loader(): Sillage_Loader {
 		return $this->loader;
 	}
 
 	/**
-	 * Retrieve the version number of the plugin.
+	 * Version.
 	 *
-	 * @since     1.0.0
-	 * @return    string    The version number of the plugin.
+	 * @since 1.0.0
+	 * @return string
 	 */
-	public function get_version() {
+	public function get_version(): string {
 		return $this->version;
 	}
-
 }

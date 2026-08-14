@@ -1,103 +1,242 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
- *
- * @link       https://github.com/lotfim
- * @since      1.0.0
  *
  * @package    Sillage
  * @subpackage Sillage/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * The admin-specific functionality of the plugin.
+ * Admin menu, screens, assets, and export action.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Sillage
- * @subpackage Sillage/admin
- * @author     Lotfi MANSEUR <lotfi.manseur.tech@gmail.com>
+ * @since 1.0.0
  */
 class Sillage_Admin {
 
 	/**
-	 * The ID of this plugin.
+	 * Plugin slug.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @since 1.0.0
+	 * @var string
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
-	 * The version of this plugin.
+	 * Plugin version.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since 1.0.0
+	 * @var string
 	 */
-	private $version;
+	private string $version;
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Constructor.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since 1.0.0
+	 * @param string $plugin_name Plugin slug.
+	 * @param string $version     Version.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
+	public function __construct( string $plugin_name, string $version ) {
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+		$this->version     = $version;
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
+	 * Register the admin menu.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
+	 * @return void
 	 */
-	public function enqueue_styles() {
+	public function register_menu(): void {
+		add_menu_page(
+			__( 'Sillage', 'sillage' ),
+			__( 'Sillage', 'sillage' ),
+			'manage_options',
+			'sillage',
+			array( $this, 'render_logs_page' ),
+			'dashicons-visibility',
+			30
+		);
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Sillage_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Sillage_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		add_submenu_page(
+			'sillage',
+			__( 'Visit log', 'sillage' ),
+			__( 'Visit log', 'sillage' ),
+			'manage_options',
+			'sillage',
+			array( $this, 'render_logs_page' )
+		);
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sillage-admin.css', array(), $this->version, 'all' );
-
+		add_submenu_page(
+			'sillage',
+			__( 'Settings', 'sillage' ),
+			__( 'Settings', 'sillage' ),
+			'manage_options',
+			'sillage-settings',
+			array( $this, 'render_settings_page' )
+		);
 	}
 
 	/**
-	 * Register the JavaScript for the admin area.
+	 * Register settings.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
+	 * @return void
 	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Sillage_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Sillage_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/sillage-admin.js', array( 'jquery' ), $this->version, false );
-
+	public function register_settings(): void {
+		register_setting(
+			'sillage_settings_group',
+			Sillage_Settings::OPTION_KEY,
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( $this, 'sanitize_settings' ),
+				'default'           => Sillage_Settings::defaults(),
+			)
+		);
 	}
 
+	/**
+	 * Sanitize settings from the options form.
+	 *
+	 * @since 1.0.0
+	 * @param mixed $input Raw input.
+	 * @return array<string, mixed>
+	 */
+	public function sanitize_settings( $input ): array {
+		if ( ! is_array( $input ) ) {
+			$input = array();
+		}
+
+		return Sillage_Settings::sanitize( $input );
+	}
+
+	/**
+	 * Enqueue admin assets on Sillage screens only.
+	 *
+	 * @since 1.0.0
+	 * @param string $hook Current admin page hook.
+	 * @return void
+	 */
+	public function enqueue_assets( string $hook ): void {
+		$screens = array(
+			'toplevel_page_sillage',
+			'sillage_page_sillage-settings',
+		);
+
+		if ( ! in_array( $hook, $screens, true ) ) {
+			return;
+		}
+
+		$css_rel = 'admin/css/sillage-admin.css';
+		$js_rel  = 'admin/js/sillage-admin.js';
+		$css     = SILLAGE_PLUGIN_DIR . $css_rel;
+		$js      = SILLAGE_PLUGIN_DIR . $js_rel;
+
+		if ( file_exists( $css ) ) {
+			wp_enqueue_style(
+				'sillage-admin',
+				SILLAGE_PLUGIN_URL . $css_rel,
+				array(),
+				(string) filemtime( $css )
+			);
+		}
+
+		if ( 'toplevel_page_sillage' !== $hook || ! file_exists( $js ) ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'sillage-admin',
+			SILLAGE_PLUGIN_URL . $js_rel,
+			array( 'jquery' ),
+			(string) filemtime( $js ),
+			true
+		);
+
+		wp_localize_script(
+			'sillage-admin',
+			'sillageAdmin',
+			array(
+				'restUrl'     => esc_url_raw( rest_url( Sillage_Rest::NAMESPACE . '/' ) ),
+				'restNonce'   => wp_create_nonce( 'wp_rest' ),
+				'exportUrl'   => esc_url_raw( admin_url( 'admin-post.php' ) ),
+				'exportNonce' => wp_create_nonce( 'sillage_export' ),
+				'i18n'        => array(
+					'inProgress'         => __( 'In progress', 'sillage' ),
+					'placeholderUser'    => __( 'Filter by user…', 'sillage' ),
+					'placeholderContent' => __( 'Filter by content…', 'sillage' ),
+					'processing'         => __( 'Loading…', 'sillage' ),
+					'zeroRecords'        => __( 'No matching visits.', 'sillage' ),
+					'emptyTable'         => __( 'No visits recorded yet.', 'sillage' ),
+					'lengthMenu'         => __( 'Show _MENU_ entries', 'sillage' ),
+					'info'               => __( 'Showing _START_ to _END_ of _TOTAL_ visits', 'sillage' ),
+					'infoEmpty'          => __( 'Showing 0 to 0 of 0 visits', 'sillage' ),
+					'infoFiltered'       => __( '(filtered from _MAX_ total visits)', 'sillage' ),
+					'paginateFirst'      => __( 'First', 'sillage' ),
+					'paginateLast'       => __( 'Last', 'sillage' ),
+					'paginateNext'       => __( 'Next', 'sillage' ),
+					'paginatePrev'       => __( 'Previous', 'sillage' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Visit log screen.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function render_logs_page(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'sillage' ) );
+		}
+
+		include SILLAGE_PLUGIN_DIR . 'admin/views/logs.php';
+	}
+
+	/**
+	 * Settings screen.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function render_settings_page(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'sillage' ) );
+		}
+
+		$settings = Sillage_Settings::all();
+
+		include SILLAGE_PLUGIN_DIR . 'admin/views/settings.php';
+	}
+
+	/**
+	 * Handle admin-post export.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function handle_export(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to export logs.', 'sillage' ) );
+		}
+
+		check_admin_referer( 'sillage_export' );
+
+		$format_raw = isset( $_GET['format'] ) ? sanitize_key( wp_unslash( $_GET['format'] ) ) : 'csv';
+		$format     = Sillage_Export_Format::tryFrom( $format_raw );
+
+		if ( ! $format ) {
+			wp_die( esc_html__( 'Invalid export format.', 'sillage' ) );
+		}
+
+		$filters = Sillage_Query::filters_from_request( wp_unslash( $_GET ) );
+
+		Sillage_Exporter::stream( $format, $filters );
+	}
 }

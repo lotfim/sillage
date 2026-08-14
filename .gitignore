@@ -1,7 +1,28 @@
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
 # --- Cursor ---
 .cursor/
 
-# --- Specifications ---
+# --- Specifications (kept local, not shipped) ---
 sillage-plugin-specs.md
 sillage-plugin-specs.txt
 TECH-STACK.md
+
+# --- Dependencies ---
+vendor/
+node_modules/
+
+# --- Build ---
+*.map
+*.log
+npm-debug.log*
+
+# --- Tests ---
+.phpunit.result.cache
+.phpunit.cache

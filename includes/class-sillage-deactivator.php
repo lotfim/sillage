@@ -1,36 +1,33 @@
 <?php
-
 /**
- * Fired during plugin deactivation
- *
- * @link       https://github.com/lotfim
- * @since      1.0.0
+ * Fired during plugin deactivation.
  *
  * @package    Sillage
  * @subpackage Sillage/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * Fired during plugin deactivation.
+ * Deactivation tasks. Data is intentionally kept.
  *
- * This class defines all code necessary to run during the plugin's deactivation.
- *
- * @since      1.0.0
- * @package    Sillage
- * @subpackage Sillage/includes
- * @author     Lotfi MANSEUR <lotfi.manseur.tech@gmail.com>
+ * @since 1.0.0
  */
 class Sillage_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Deactivate the plugin.
 	 *
-	 * Long Description.
+	 * Unschedules cron. Does not drop tables or delete options.
 	 *
-	 * @since    1.0.0
+	 * @since 1.0.0
+	 * @return void
 	 */
-	public static function deactivate() {
+	public static function deactivate(): void {
+		require_once plugin_dir_path( __FILE__ ) . 'class-sillage-cron.php';
 
+		Sillage_Cron::unschedule();
 	}
-
 }

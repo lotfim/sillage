@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ruleset name="Sillage">
+	<description>WordPress Coding Standards for the Sillage plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/languages/*</exclude-pattern>
+	<exclude-pattern>*/\.cursor/*</exclude-pattern>
+	<exclude-pattern>*/src/*</exclude-pattern>
+
+	<arg name="basepath" value="."/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<rule ref="WordPress">
+		<exclude name="Universal.Operators.DisallowShortTernary"/>
+		<exclude name="Generic.Commenting.DocComment.MissingShort"/>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="sillage"/>
+				<element value="SILLAGE"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="sillage"/>
+			</property>
+		</properties>
+	</rule>
+
+	<config name="testVersion" value="8.3-"/>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<rule ref="Squiz.Commenting.FileComment">
+		<exclude-pattern>*/index.php</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.InlineComment">
+		<exclude-pattern>*/index.php</exclude-pattern>
+	</rule>
+</ruleset>

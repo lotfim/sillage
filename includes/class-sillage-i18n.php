@@ -1,17 +1,14 @@
 <?php
-
 /**
  * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @link       https://github.com/lotfim
- * @since      1.0.0
  *
  * @package    Sillage
  * @subpackage Sillage/includes
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Define the internationalization functionality.
@@ -24,7 +21,7 @@
  * @subpackage Sillage/includes
  * @author     Lotfi MANSEUR <lotfi.manseur.tech@gmail.com>
  */
-class Sillage_i18n {
+class Sillage_I18n {
 
 
 	/**
@@ -39,9 +36,5 @@ class Sillage_i18n {
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);
-
 	}
-
-
-
 }
