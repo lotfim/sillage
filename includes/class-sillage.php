@@ -69,6 +69,7 @@ class Sillage {
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-settings.php';
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-tracker.php';
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-query.php';
+		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-stats.php';
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-rest.php';
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-cron.php';
 		require_once SILLAGE_PLUGIN_DIR . 'includes/class-sillage-export-format.php';

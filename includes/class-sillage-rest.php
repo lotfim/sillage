@@ -93,6 +93,16 @@ class Sillage_Rest {
 				),
 			)
 		);
+
+		register_rest_route(
+			self::NAMESPACE,
+			'/stats',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_stats' ),
+				'permission_callback' => array( $this, 'can_manage' ),
+			)
+		);
 	}
 
 	/**
@@ -302,6 +312,19 @@ class Sillage_Rest {
 		}
 
 		return new WP_REST_Response( array( 'results' => $results ) );
+	}
+
+	/**
+	 * Dashboard aggregations.
+	 *
+	 * @since 1.0.0
+	 * @param WP_REST_Request $request Request.
+	 * @return WP_REST_Response
+	 */
+	public function get_stats( WP_REST_Request $request ): WP_REST_Response {
+		$filters = Sillage_Query::filters_from_request( $request->get_params() );
+
+		return new WP_REST_Response( Sillage_Stats::build( $filters ) );
 	}
 
 	/**

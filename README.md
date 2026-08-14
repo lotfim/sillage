@@ -142,7 +142,7 @@ See `TECH-STACK.md` for the full stack rationale, and
 ## Roadmap
 
 - [x] Phase 1: logging engine, admin list view, filters, export
-- [ ] Phase 2: analytics dashboard (specified in `sillage-plugin-specs.txt` §11 — KPIs, time series, top contents/users, by type)
+- [x] Phase 2: analytics dashboard (specified in `sillage-plugin-specs.txt` §11 — KPIs, time series, top contents/users, by type)
 - [ ] Later: geographic map, anomaly detection, period comparison, dashboard export
 
 ## Privacy / GDPR

@@ -73,6 +73,15 @@ class Sillage_Admin {
 
 		add_submenu_page(
 			'sillage',
+			__( 'Analytics', 'sillage' ),
+			__( 'Analytics', 'sillage' ),
+			'manage_options',
+			'sillage-analytics',
+			array( $this, 'render_analytics_page' )
+		);
+
+		add_submenu_page(
+			'sillage',
 			__( 'Settings', 'sillage' ),
 			__( 'Settings', 'sillage' ),
 			'manage_options',
@@ -124,6 +133,7 @@ class Sillage_Admin {
 	public function enqueue_assets( string $hook ): void {
 		$screens = array(
 			'toplevel_page_sillage',
+			'sillage_page_sillage-analytics',
 			'sillage_page_sillage-settings',
 		);
 
@@ -145,7 +155,12 @@ class Sillage_Admin {
 			);
 		}
 
-		if ( 'toplevel_page_sillage' !== $hook || ! file_exists( $js ) ) {
+		$js_screens = array(
+			'toplevel_page_sillage',
+			'sillage_page_sillage-analytics',
+		);
+
+		if ( ! in_array( $hook, $js_screens, true ) || ! file_exists( $js ) ) {
 			return;
 		}
 
@@ -157,6 +172,8 @@ class Sillage_Admin {
 			true
 		);
 
+		$defaults = Sillage_Stats::default_range();
+
 		wp_localize_script(
 			'sillage-admin',
 			'sillageAdmin',
@@ -166,6 +183,11 @@ class Sillage_Admin {
 				'exportUrl'   => esc_url_raw( admin_url( 'admin-post.php' ) ),
 				'exportNonce' => wp_create_nonce( 'sillage_export' ),
 				'datePicker'  => self::date_picker_config(),
+				'defaults'    => array(
+					'date_from' => $defaults['from'],
+					'date_to'   => $defaults['to'],
+				),
+				'locale'      => str_replace( '_', '-', get_user_locale() ),
 				'i18n'        => array(
 					'inProgress'         => __( 'In progress', 'sillage' ),
 					'placeholderUser'    => __( 'Filter by user…', 'sillage' ),
@@ -189,6 +211,14 @@ class Sillage_Admin {
 					'removeAllItems'     => __( 'Remove all items', 'sillage' ),
 					/* translators: %d: number of characters still required. */
 					'inputTooShort'      => __( 'Please enter %d or more characters.', 'sillage' ),
+					'visits'             => __( 'Visits', 'sillage' ),
+					'uniqueUsers'        => __( 'Unique users', 'sillage' ),
+					'byHour'             => __( 'Hourly', 'sillage' ),
+					'byDay'              => __( 'Daily', 'sillage' ),
+					'noData'             => __( 'No data', 'sillage' ),
+					'durationHours'      => __( 'hr', 'sillage' ),
+					'durationMinutes'    => __( 'min', 'sillage' ),
+					'durationSeconds'    => __( 'sec', 'sillage' ),
 				),
 			)
 		);
@@ -206,6 +236,20 @@ class Sillage_Admin {
 		}
 
 		include SILLAGE_PLUGIN_DIR . 'admin/views/logs.php';
+	}
+
+	/**
+	 * Analytics dashboard screen.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function render_analytics_page(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'sillage' ) );
+		}
+
+		include SILLAGE_PLUGIN_DIR . 'admin/views/analytics.php';
 	}
 
 	/**

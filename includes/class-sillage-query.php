@@ -132,11 +132,13 @@ class Sillage_Query {
 	/**
 	 * Build WHERE SQL and placeholder args.
 	 *
+	 * Shared by the list, export, and analytics aggregations.
+	 *
 	 * @since 1.0.0
 	 * @param array<string, mixed> $filters Sanitized filters.
 	 * @return array{sql: string, args: array<int, mixed>}
 	 */
-	private static function where_clause( array $filters ): array {
+	public static function where_clause( array $filters ): array {
 		global $wpdb;
 
 		$where = array( '1=1' );

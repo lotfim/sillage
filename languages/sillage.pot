@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-14T12:44:21+00:00\n"
+"POT-Creation-Date: 2026-08-14T13:44:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: sillage\n"
@@ -49,106 +49,198 @@ msgstr ""
 
 #: admin/class-sillage-admin.php:76
 #: admin/class-sillage-admin.php:77
+#: admin/views/analytics.php:16
+msgid "Analytics"
+msgstr ""
+
+#: admin/class-sillage-admin.php:85
+#: admin/class-sillage-admin.php:86
 msgid "Settings"
 msgstr ""
 
-#: admin/class-sillage-admin.php:169
+#: admin/class-sillage-admin.php:192
 msgid "In progress"
 msgstr ""
 
-#: admin/class-sillage-admin.php:170
+#: admin/class-sillage-admin.php:193
 msgid "Filter by user…"
 msgstr ""
 
-#: admin/class-sillage-admin.php:171
+#: admin/class-sillage-admin.php:194
 msgid "Filter by content…"
 msgstr ""
 
-#: admin/class-sillage-admin.php:172
+#: admin/class-sillage-admin.php:195
+#: admin/views/analytics.php:30
 msgid "Loading…"
 msgstr ""
 
-#: admin/class-sillage-admin.php:173
+#: admin/class-sillage-admin.php:196
 msgid "No matching visits."
 msgstr ""
 
-#: admin/class-sillage-admin.php:174
+#: admin/class-sillage-admin.php:197
+#: admin/views/analytics.php:35
 msgid "No visits recorded yet. Open a published page or post while logged in on the front of the site."
 msgstr ""
 
-#: admin/class-sillage-admin.php:175
+#: admin/class-sillage-admin.php:198
 msgid "View content"
 msgstr ""
 
-#: admin/class-sillage-admin.php:176
+#: admin/class-sillage-admin.php:199
 msgid "Show _MENU_ entries"
 msgstr ""
 
-#: admin/class-sillage-admin.php:177
+#: admin/class-sillage-admin.php:200
 msgid "Showing _START_ to _END_ of _TOTAL_ visits"
 msgstr ""
 
-#: admin/class-sillage-admin.php:178
+#: admin/class-sillage-admin.php:201
 msgid "Showing 0 to 0 of 0 visits"
 msgstr ""
 
-#: admin/class-sillage-admin.php:179
+#: admin/class-sillage-admin.php:202
 msgid "(filtered from _MAX_ total visits)"
 msgstr ""
 
-#: admin/class-sillage-admin.php:180
+#: admin/class-sillage-admin.php:203
 msgid "First"
 msgstr ""
 
-#: admin/class-sillage-admin.php:181
+#: admin/class-sillage-admin.php:204
 msgid "Last"
 msgstr ""
 
-#: admin/class-sillage-admin.php:182
+#: admin/class-sillage-admin.php:205
 msgid "Next"
 msgstr ""
 
-#: admin/class-sillage-admin.php:183
+#: admin/class-sillage-admin.php:206
 msgid "Previous"
 msgstr ""
 
-#: admin/class-sillage-admin.php:184
+#: admin/class-sillage-admin.php:207
 msgid "Searching…"
 msgstr ""
 
-#: admin/class-sillage-admin.php:185
+#: admin/class-sillage-admin.php:208
 msgid "No results found"
 msgstr ""
 
-#: admin/class-sillage-admin.php:186
+#: admin/class-sillage-admin.php:209
+#: admin/views/analytics.php:39
 msgid "The results could not be loaded."
 msgstr ""
 
-#: admin/class-sillage-admin.php:187
+#: admin/class-sillage-admin.php:210
 msgid "Loading more results…"
 msgstr ""
 
-#: admin/class-sillage-admin.php:188
+#: admin/class-sillage-admin.php:211
 msgid "Remove all items"
 msgstr ""
 
 #. translators: %d: number of characters still required.
-#: admin/class-sillage-admin.php:190
+#: admin/class-sillage-admin.php:213
 #, php-format
 msgid "Please enter %d or more characters."
 msgstr ""
 
-#: admin/class-sillage-admin.php:204
+#: admin/class-sillage-admin.php:214
+#: admin/views/analytics.php:45
+msgid "Visits"
+msgstr ""
+
+#: admin/class-sillage-admin.php:215
+#: admin/views/analytics.php:49
+msgid "Unique users"
+msgstr ""
+
+#: admin/class-sillage-admin.php:216
+msgid "Hourly"
+msgstr ""
+
+#: admin/class-sillage-admin.php:217
+msgid "Daily"
+msgstr ""
+
 #: admin/class-sillage-admin.php:218
+msgid "No data"
+msgstr ""
+
+#: admin/class-sillage-admin.php:219
+msgid "hr"
+msgstr ""
+
+#: admin/class-sillage-admin.php:220
+msgid "min"
+msgstr ""
+
+#: admin/class-sillage-admin.php:221
+msgid "sec"
+msgstr ""
+
+#: admin/class-sillage-admin.php:235
+#: admin/class-sillage-admin.php:249
+#: admin/class-sillage-admin.php:263
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: admin/class-sillage-admin.php:234
+#: admin/class-sillage-admin.php:279
 msgid "You do not have permission to export logs."
 msgstr ""
 
-#: admin/class-sillage-admin.php:243
+#: admin/class-sillage-admin.php:288
 msgid "Invalid export format."
+msgstr ""
+
+#: admin/views/analytics.php:18
+msgid "Aggregated front-office visits by logged-in users. Average duration only includes visits with an exit time, which is best-effort and may be missing."
+msgstr ""
+
+#: admin/views/analytics.php:23
+msgid "Quick date ranges"
+msgstr ""
+
+#: admin/views/analytics.php:24
+msgid "Last 7 days"
+msgstr ""
+
+#: admin/views/analytics.php:25
+msgid "Last 30 days"
+msgstr ""
+
+#: admin/views/analytics.php:26
+msgid "Last 90 days"
+msgstr ""
+
+#: admin/views/analytics.php:34
+msgid "No visits in this period."
+msgstr ""
+
+#: admin/views/analytics.php:53
+msgid "Unique contents"
+msgstr ""
+
+#: admin/views/analytics.php:57
+msgid "Average duration"
+msgstr ""
+
+#: admin/views/analytics.php:64
+msgid "Visits over time"
+msgstr ""
+
+#: admin/views/analytics.php:75
+msgid "Top content"
+msgstr ""
+
+#: admin/views/analytics.php:81
+msgid "Top users"
+msgstr ""
+
+#: admin/views/analytics.php:87
+msgid "By content type"
 msgstr ""
 
 #: admin/views/logs.php:14
@@ -163,74 +255,74 @@ msgstr ""
 msgid "Front-office visits by logged-in users. Exit dates are approximate: they are sent when the browser tab is hidden or closed, and may be missing."
 msgstr ""
 
-#: admin/views/logs.php:21
-#: admin/views/logs.php:51
+#: admin/views/logs.php:27
+#: admin/views/partials/filters.php:17
 #: includes/class-sillage-exporter.php:70
 #: includes/class-sillage-exporter.php:311
 #: includes/class-sillage-privacy.php:101
 msgid "User"
 msgstr ""
 
-#: admin/views/logs.php:25
-#: admin/views/logs.php:54
+#: admin/views/logs.php:28
+#: includes/class-sillage-exporter.php:71
+#: includes/class-sillage-privacy.php:105
+msgid "Email"
+msgstr ""
+
+#: admin/views/logs.php:29
+#: includes/class-sillage-exporter.php:72
+#: includes/class-sillage-privacy.php:109
+msgid "IP address"
+msgstr ""
+
+#: admin/views/logs.php:30
+#: admin/views/partials/filters.php:21
 #: includes/class-sillage-exporter.php:73
 #: includes/class-sillage-exporter.php:317
 #: includes/class-sillage-privacy.php:113
 msgid "Content"
 msgstr ""
 
-#: admin/views/logs.php:29
-#: includes/class-sillage-exporter.php:321
-msgid "From"
-msgstr ""
-
-#: admin/views/logs.php:33
-#: includes/class-sillage-exporter.php:325
-msgid "To"
-msgstr ""
-
-#: admin/views/logs.php:37
-msgid "Apply filters"
-msgstr ""
-
-#: admin/views/logs.php:38
-msgid "Reset"
-msgstr ""
-
-#: admin/views/logs.php:43
-msgid "Export CSV"
-msgstr ""
-
-#: admin/views/logs.php:44
-msgid "Export Excel"
-msgstr ""
-
-#: admin/views/logs.php:45
-msgid "Export PDF"
-msgstr ""
-
-#: admin/views/logs.php:52
-#: includes/class-sillage-exporter.php:71
-#: includes/class-sillage-privacy.php:105
-msgid "Email"
-msgstr ""
-
-#: admin/views/logs.php:53
-#: includes/class-sillage-exporter.php:72
-#: includes/class-sillage-privacy.php:109
-msgid "IP address"
-msgstr ""
-
-#: admin/views/logs.php:55
+#: admin/views/logs.php:31
 #: includes/class-sillage-exporter.php:75
 #: includes/class-sillage-privacy.php:121
 msgid "Entry date"
 msgstr ""
 
-#: admin/views/logs.php:56
+#: admin/views/logs.php:32
 #: includes/class-sillage-exporter.php:76
 #: includes/class-sillage-privacy.php:125
 msgid "Exit date"
+msgstr ""
+
+#: admin/views/partials/filters.php:25
+#: includes/class-sillage-exporter.php:321
+msgid "From"
+msgstr ""
+
+#: admin/views/partials/filters.php:29
+#: includes/class-sillage-exporter.php:325
+msgid "To"
+msgstr ""
+
+#: admin/views/partials/filters.php:33
+msgid "Apply filters"
+msgstr ""
+
+#: admin/views/partials/filters.php:34
+msgid "Reset"
+msgstr ""
+
+#: admin/views/partials/filters.php:39
+msgid "Export CSV"
+msgstr ""
+
+#: admin/views/partials/filters.php:40
+msgid "Export Excel"
+msgstr ""
+
+#: admin/views/partials/filters.php:41
+msgid "Export PDF"
 msgstr ""
 
 #: admin/views/settings.php:22

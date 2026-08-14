@@ -4,6 +4,7 @@ import select2 from 'select2';
 import DataTable from 'datatables.net-dt';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr.js';
+import { initAnalytics } from './sillage-analytics.js';
 
 // Select2's CJS build exports a factory; a side-effect import does not attach $.fn.select2.
 if (typeof select2 === 'function' && !$.fn.select2) {
@@ -156,7 +157,14 @@ function initDatePickers(datePicker) {
 
 $(function () {
 	const cfg = window.sillageAdmin;
-	if (!cfg || !document.getElementById('sillage-logs')) {
+	if (!cfg) {
+		return;
+	}
+
+	const isLogs = !!document.getElementById('sillage-logs');
+	const isAnalytics = !!document.getElementById('sillage-analytics');
+
+	if (!isLogs && !isAnalytics) {
 		return;
 	}
 
@@ -166,6 +174,11 @@ $(function () {
 	if ($.fn.select2) {
 		initSelect2('#sillage-filter-user', 'autocomplete/users', i18n.placeholderUser);
 		initSelect2('#sillage-filter-content', 'autocomplete/pages', i18n.placeholderContent);
+	}
+
+	if (isAnalytics) {
+		initAnalytics(cfg, datePickers, currentFilters);
+		return;
 	}
 
 	const table = new DataTable('#sillage-logs', {
