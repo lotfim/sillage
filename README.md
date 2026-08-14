@@ -128,13 +128,31 @@ composer run lint   # PHPCS (WPCS)
 Exclude development files via `.distignore`, then from the plugin directory:
 
 ```bash
-composer install --no-dev --optimize-autoloader
-npm ci && npm run build
-wp dist-archive . ./sillage.zip --plugin-dirname=sillage
+php tools/make-dist-zip.php
 ```
 
+That copies the plugin (honouring `.distignore`), runs `composer install --no-dev`,
+and writes `sillage-1.0.0.zip` in the plugin directory.
+
 The zip must include `vendor/` and built `admin/js` + `admin/css`, but not
-`src/`, `node_modules/`, `.cursor/`, or the internal specs.
+`src/`, `node_modules/`, `.cursor/`, `tools/`, or the internal specs.
+
+WP.org listing assets live in `.wordpress-org/` and are uploaded to the
+plugin SVN `assets/` folder — they are **not** inside the plugin zip:
+
+- `icon-256x256.png` / `icon-128x128.png`
+- `banner-1544x500.png` / `banner-772x250.png`
+- `screenshot-1.png` visit log
+- `screenshot-2.png` analytics
+- `screenshot-3.png` settings
+
+Captions for the screenshots are in `README.txt` (`== Screenshots ==`).
+
+Demo data for screenshots (English users/pages/visits):
+
+```bash
+wp eval-file tools/seed-demo.php
+```
 
 See `TECH-STACK.md` for the full stack rationale, and
 `sillage-plugin-specs.txt` for the functional specification.
@@ -162,8 +180,12 @@ rows for the requested user.
 
 <!-- Keep in sync with each release -->
 
-### 1.0.0 (unreleased)
-- Initial development.
+### 1.0.0
+- Visit logging for logged-in users on front-office singulars
+- Admin visit log (DataTables, filters, CSV/Excel/PDF export)
+- Analytics dashboard (KPIs, charts, top lists)
+- GDPR settings: IP anonymization, retention cron, privacy exporter/eraser
+- English source strings and French (`fr_FR`) translation
 
 ## License
 

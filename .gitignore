@@ -23,6 +23,8 @@ node_modules/
 *.log
 npm-debug.log*
 
-# --- Tests ---
-.phpunit.result.cache
-.phpunit.cache
+# --- Scripts / dumps locaux ---
+_tmp_*.php
+*.sql
+*.sql.gz
+*.zip
