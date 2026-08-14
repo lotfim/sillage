@@ -1,5 +1,6 @@
 @import 'datatables.net-dt/css/dataTables.dataTables.css';
 @import 'select2/dist/css/select2.css';
+@import 'flatpickr/dist/flatpickr.min.css';
 
 @tailwind components;
 @tailwind utilities;
@@ -11,6 +12,93 @@
 /* Dropdown is appended to body, outside .sillage-wrap. */
 .select2-container {
 	z-index: 100050;
+}
+
+.flatpickr-calendar {
+	z-index: 100100;
+}
+
+/* wp-admin global form styles break Flatpickr month/year controls. */
+.flatpickr-calendar .flatpickr-months .flatpickr-month {
+	height: 34px;
+	overflow: visible;
+}
+
+.flatpickr-calendar .flatpickr-current-month {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	width: auto;
+	left: 12.5%;
+	padding-top: 0;
+	height: 34px;
+	font-size: 135%;
+	line-height: 1;
+}
+
+.flatpickr-calendar .flatpickr-current-month .cur-month {
+	margin: 0;
+	font-weight: 700;
+}
+
+.flatpickr-calendar .flatpickr-current-month .numInputWrapper {
+	width: 3.75em;
+	margin-left: 0;
+}
+
+.flatpickr-calendar .flatpickr-current-month input.cur-year,
+.flatpickr-calendar .flatpickr-current-month .numInput.cur-year {
+	appearance: textfield;
+	-moz-appearance: textfield;
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: inherit !important;
+	font: inherit !important;
+	font-weight: 300 !important;
+	height: auto !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	max-width: none !important;
+	min-height: 0 !important;
+	padding: 0 0.15em !important;
+	text-align: center;
+	width: 100% !important;
+}
+
+.flatpickr-calendar .flatpickr-current-month input.cur-year::-webkit-outer-spin-button,
+.flatpickr-calendar .flatpickr-current-month input.cur-year::-webkit-inner-spin-button {
+	margin: 0;
+}
+
+.flatpickr-calendar select.flatpickr-monthDropdown-months,
+.flatpickr-calendar .flatpickr-monthDropdown-months {
+	appearance: none !important;
+	-webkit-appearance: none !important;
+	background-color: transparent !important;
+	background-image: none !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: inherit !important;
+	font: inherit !important;
+	font-weight: 700 !important;
+	height: auto !important;
+	line-height: 1 !important;
+	margin: 0 0.35em 0 0 !important;
+	max-width: none !important;
+	min-height: 0 !important;
+	padding: 0 1.1em 0 0.2em !important;
+	vertical-align: baseline !important;
+	width: auto !important;
+}
+
+.sillage-wrap .flatpickr-input,
+.sillage-wrap .flatpickr-input.form-control,
+.sillage-wrap input.sillage-datepicker {
+	max-width: 9.5rem;
 }
 
 .sillage-wrap .select2-container--default .select2-selection--single {

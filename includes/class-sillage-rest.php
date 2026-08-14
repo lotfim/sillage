@@ -185,8 +185,10 @@ class Sillage_Rest {
 		$data = array();
 
 		foreach ( $rows as $row ) {
-			$type_obj = get_post_type_object( $row->object_type );
-			$label    = $type_obj ? $type_obj->labels->singular_name : $row->object_type;
+			$type_obj   = get_post_type_object( $row->object_type );
+			$label      = $type_obj ? $type_obj->labels->singular_name : $row->object_type;
+			$permalink  = get_permalink( (int) $row->object_id );
+			$object_url = $permalink ? (string) $permalink : '';
 
 			$data[] = array(
 				'id'                 => (int) $row->id,
@@ -198,6 +200,7 @@ class Sillage_Rest {
 				'object_title'       => $row->object_title,
 				'object_type'        => $row->object_type,
 				'object_type_label'  => $label,
+				'object_url'         => $object_url,
 				'entry_date'         => $row->entry_date,
 				'entry_date_display' => $this->format_datetime( $row->entry_date ),
 				'exit_date'          => $row->exit_date,
@@ -280,7 +283,7 @@ class Sillage_Rest {
 
 		$sql .= ' ORDER BY post_title ASC LIMIT 20';
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- typed placeholders; title-only autocomplete.
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- typed placeholders; title-only autocomplete.
 		$rows = $wpdb->get_results( $wpdb->prepare( $sql, ...$args ) );
 
 		$results = array();

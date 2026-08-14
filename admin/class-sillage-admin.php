@@ -165,13 +165,15 @@ class Sillage_Admin {
 				'restNonce'   => wp_create_nonce( 'wp_rest' ),
 				'exportUrl'   => esc_url_raw( admin_url( 'admin-post.php' ) ),
 				'exportNonce' => wp_create_nonce( 'sillage_export' ),
+				'datePicker'  => self::date_picker_config(),
 				'i18n'        => array(
 					'inProgress'         => __( 'In progress', 'sillage' ),
 					'placeholderUser'    => __( 'Filter by user…', 'sillage' ),
 					'placeholderContent' => __( 'Filter by content…', 'sillage' ),
 					'processing'         => __( 'Loading…', 'sillage' ),
 					'zeroRecords'        => __( 'No matching visits.', 'sillage' ),
-					'emptyTable'         => __( 'No visits recorded yet.', 'sillage' ),
+					'emptyTable'         => __( 'No visits recorded yet. Open a published page or post while logged in on the front of the site.', 'sillage' ),
+					'viewContent'        => __( 'View content', 'sillage' ),
 					'lengthMenu'         => __( 'Show _MENU_ entries', 'sillage' ),
 					'info'               => __( 'Showing _START_ to _END_ of _TOTAL_ visits', 'sillage' ),
 					'infoEmpty'          => __( 'Showing 0 to 0 of 0 visits', 'sillage' ),
@@ -245,5 +247,41 @@ class Sillage_Admin {
 		$filters = Sillage_Query::filters_from_request( wp_unslash( $_GET ) );
 
 		Sillage_Exporter::stream( $format, $filters );
+	}
+
+	/**
+	 * Flatpickr options derived from the current user locale.
+	 *
+	 * Values stay ISO (Y-m-d) in the hidden field; altFormat drives display.
+	 *
+	 * @since 1.0.0
+	 * @return array{locale:string,altFormat:string,placeholder:string}
+	 */
+	private static function date_picker_config(): array {
+		$locale     = get_user_locale();
+		$normalized = strtolower( str_replace( '-', '_', $locale ) );
+		$lang       = strtok( $normalized, '_' );
+
+		if ( ! is_string( $lang ) || '' === $lang ) {
+			$lang = 'en';
+		}
+
+		// US English → m/d/Y; French → d/m/Y with jj/mm/aaaa hint; everyone else → d/m/Y.
+		if ( 'en_us' === $normalized ) {
+			$alt_format  = 'm/d/Y';
+			$placeholder = 'mm/dd/yyyy';
+		} elseif ( 'fr' === $lang ) {
+			$alt_format  = 'd/m/Y';
+			$placeholder = 'jj/mm/aaaa';
+		} else {
+			$alt_format  = 'd/m/Y';
+			$placeholder = 'dd/mm/yyyy';
+		}
+
+		return array(
+			'locale'      => $lang,
+			'altFormat'   => $alt_format,
+			'placeholder' => $placeholder,
+		);
 	}
 }

@@ -40,6 +40,8 @@ return array(
 		'Loading…' => 'Chargement…',
 		'No matching visits.' => 'Aucune visite correspondante.',
 		'No visits recorded yet.' => 'Aucune visite enregistrée pour le moment.',
+		'No visits recorded yet. Open a published page or post while logged in on the front of the site.' => 'Aucune visite enregistrée pour le moment. Ouvrez une page ou un article publié en étant connecté sur le front du site.',
+		'View content' => 'Voir le contenu',
 		'Show _MENU_ entries' => 'Afficher _MENU_ lignes',
 		'Showing _START_ to _END_ of _TOTAL_ visits' => 'Affichage de _START_ à _END_ sur _TOTAL_ visites',
 		'Showing 0 to 0 of 0 visits' => 'Affichage de 0 à 0 sur 0 visite',

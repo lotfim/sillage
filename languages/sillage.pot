@@ -1,0 +1,307 @@
+# Copyright (C) 2026 Lotfi MANSEUR
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Sillage 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sillage\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-14T12:44:21+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: sillage\n"
+
+#. Plugin Name of the plugin
+#: sillage.php
+#: admin/class-sillage-admin.php:56
+#: admin/class-sillage-admin.php:57
+msgid "Sillage"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: sillage.php
+msgid "https://github.com/lotfim/sillage"
+msgstr ""
+
+#. Description of the plugin
+#: sillage.php
+msgid "GDPR-friendly visit log for WordPress — track which logged-in users viewed what, when, and from where — with filters, autocomplete, and PDF/CSV/Excel export."
+msgstr ""
+
+#. Author of the plugin
+#: sillage.php
+msgid "Lotfi MANSEUR"
+msgstr ""
+
+#. Author URI of the plugin
+#: sillage.php
+msgid "https://github.com/lotfim/"
+msgstr ""
+
+#: admin/class-sillage-admin.php:67
+#: admin/class-sillage-admin.php:68
+#: includes/class-sillage-exporter.php:160
+msgid "Visit log"
+msgstr ""
+
+#: admin/class-sillage-admin.php:76
+#: admin/class-sillage-admin.php:77
+msgid "Settings"
+msgstr ""
+
+#: admin/class-sillage-admin.php:169
+msgid "In progress"
+msgstr ""
+
+#: admin/class-sillage-admin.php:170
+msgid "Filter by user…"
+msgstr ""
+
+#: admin/class-sillage-admin.php:171
+msgid "Filter by content…"
+msgstr ""
+
+#: admin/class-sillage-admin.php:172
+msgid "Loading…"
+msgstr ""
+
+#: admin/class-sillage-admin.php:173
+msgid "No matching visits."
+msgstr ""
+
+#: admin/class-sillage-admin.php:174
+msgid "No visits recorded yet. Open a published page or post while logged in on the front of the site."
+msgstr ""
+
+#: admin/class-sillage-admin.php:175
+msgid "View content"
+msgstr ""
+
+#: admin/class-sillage-admin.php:176
+msgid "Show _MENU_ entries"
+msgstr ""
+
+#: admin/class-sillage-admin.php:177
+msgid "Showing _START_ to _END_ of _TOTAL_ visits"
+msgstr ""
+
+#: admin/class-sillage-admin.php:178
+msgid "Showing 0 to 0 of 0 visits"
+msgstr ""
+
+#: admin/class-sillage-admin.php:179
+msgid "(filtered from _MAX_ total visits)"
+msgstr ""
+
+#: admin/class-sillage-admin.php:180
+msgid "First"
+msgstr ""
+
+#: admin/class-sillage-admin.php:181
+msgid "Last"
+msgstr ""
+
+#: admin/class-sillage-admin.php:182
+msgid "Next"
+msgstr ""
+
+#: admin/class-sillage-admin.php:183
+msgid "Previous"
+msgstr ""
+
+#: admin/class-sillage-admin.php:184
+msgid "Searching…"
+msgstr ""
+
+#: admin/class-sillage-admin.php:185
+msgid "No results found"
+msgstr ""
+
+#: admin/class-sillage-admin.php:186
+msgid "The results could not be loaded."
+msgstr ""
+
+#: admin/class-sillage-admin.php:187
+msgid "Loading more results…"
+msgstr ""
+
+#: admin/class-sillage-admin.php:188
+msgid "Remove all items"
+msgstr ""
+
+#. translators: %d: number of characters still required.
+#: admin/class-sillage-admin.php:190
+#, php-format
+msgid "Please enter %d or more characters."
+msgstr ""
+
+#: admin/class-sillage-admin.php:204
+#: admin/class-sillage-admin.php:218
+msgid "You do not have permission to access this page."
+msgstr ""
+
+#: admin/class-sillage-admin.php:234
+msgid "You do not have permission to export logs."
+msgstr ""
+
+#: admin/class-sillage-admin.php:243
+msgid "Invalid export format."
+msgstr ""
+
+#: admin/views/logs.php:14
+#: includes/class-sillage-exporter.php:229
+#: includes/class-sillage-privacy.php:29
+#: includes/class-sillage-privacy.php:45
+#: includes/class-sillage-privacy.php:97
+msgid "Sillage visit log"
+msgstr ""
+
+#: admin/views/logs.php:16
+msgid "Front-office visits by logged-in users. Exit dates are approximate: they are sent when the browser tab is hidden or closed, and may be missing."
+msgstr ""
+
+#: admin/views/logs.php:21
+#: admin/views/logs.php:51
+#: includes/class-sillage-exporter.php:70
+#: includes/class-sillage-exporter.php:311
+#: includes/class-sillage-privacy.php:101
+msgid "User"
+msgstr ""
+
+#: admin/views/logs.php:25
+#: admin/views/logs.php:54
+#: includes/class-sillage-exporter.php:73
+#: includes/class-sillage-exporter.php:317
+#: includes/class-sillage-privacy.php:113
+msgid "Content"
+msgstr ""
+
+#: admin/views/logs.php:29
+#: includes/class-sillage-exporter.php:321
+msgid "From"
+msgstr ""
+
+#: admin/views/logs.php:33
+#: includes/class-sillage-exporter.php:325
+msgid "To"
+msgstr ""
+
+#: admin/views/logs.php:37
+msgid "Apply filters"
+msgstr ""
+
+#: admin/views/logs.php:38
+msgid "Reset"
+msgstr ""
+
+#: admin/views/logs.php:43
+msgid "Export CSV"
+msgstr ""
+
+#: admin/views/logs.php:44
+msgid "Export Excel"
+msgstr ""
+
+#: admin/views/logs.php:45
+msgid "Export PDF"
+msgstr ""
+
+#: admin/views/logs.php:52
+#: includes/class-sillage-exporter.php:71
+#: includes/class-sillage-privacy.php:105
+msgid "Email"
+msgstr ""
+
+#: admin/views/logs.php:53
+#: includes/class-sillage-exporter.php:72
+#: includes/class-sillage-privacy.php:109
+msgid "IP address"
+msgstr ""
+
+#: admin/views/logs.php:55
+#: includes/class-sillage-exporter.php:75
+#: includes/class-sillage-privacy.php:121
+msgid "Entry date"
+msgstr ""
+
+#: admin/views/logs.php:56
+#: includes/class-sillage-exporter.php:76
+#: includes/class-sillage-privacy.php:125
+msgid "Exit date"
+msgstr ""
+
+#: admin/views/settings.php:22
+msgid "Sillage settings"
+msgstr ""
+
+#: admin/views/settings.php:26
+msgid "Sillage stores personal data (IP address, nicename, and email) for logged-in users who visit public content. Update your site privacy policy to disclose this collection. Uninstalling the plugin does not delete existing logs."
+msgstr ""
+
+#: admin/views/settings.php:35
+msgid "IP anonymization"
+msgstr ""
+
+#: admin/views/settings.php:39
+msgid "Mask the last octet of IPv4 addresses and the trailing bits of IPv6 addresses (keep /48) before storing."
+msgstr ""
+
+#: admin/views/settings.php:45
+msgid "Data retention (days)"
+msgstr ""
+
+#: admin/views/settings.php:50
+msgid "Log rows older than this are deleted daily. Use 0 to never auto-purge."
+msgstr ""
+
+#: admin/views/settings.php:56
+msgid "IP geolocation link base URL"
+msgstr ""
+
+#: admin/views/settings.php:61
+msgid "Used to build the “locate IP” link in the visit log (opened in a new tab). Default: https://ipinfo.io/"
+msgstr ""
+
+#: admin/views/settings.php:67
+msgid "PDF company name"
+msgstr ""
+
+#: admin/views/settings.php:72
+msgid "Shown as the PDF title. Leave empty to keep the default “Sillage visit log” heading."
+msgstr ""
+
+#: admin/views/settings.php:77
+msgid "PDF filters"
+msgstr ""
+
+#: admin/views/settings.php:81
+msgid "Print the active filters (user, content, date range) at the top of the PDF."
+msgstr ""
+
+#: includes/class-sillage-exporter.php:74
+#: includes/class-sillage-privacy.php:117
+msgid "Type"
+msgstr ""
+
+#: includes/class-sillage-exporter.php:120
+msgid "Unable to start the export."
+msgstr ""
+
+#: includes/class-sillage-exporter.php:155
+msgid "Excel export requires Composer dependencies (PhpSpreadsheet)."
+msgstr ""
+
+#: includes/class-sillage-exporter.php:217
+msgid "PDF export requires Composer dependencies (DomPDF)."
+msgstr ""
+
+#: includes/class-sillage-exporter.php:241
+msgid "Filters"
+msgstr ""
+
+#: includes/class-sillage-exporter.php:329
+msgid "No filters applied"
+msgstr ""

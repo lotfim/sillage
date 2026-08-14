@@ -2,11 +2,17 @@ import './sillage-admin.css';
 import $ from 'jquery';
 import select2 from 'select2';
 import DataTable from 'datatables.net-dt';
+import flatpickr from 'flatpickr';
+import { French } from 'flatpickr/dist/l10n/fr.js';
 
 // Select2's CJS build exports a factory; a side-effect import does not attach $.fn.select2.
 if (typeof select2 === 'function' && !$.fn.select2) {
 	select2(window, $);
 }
+
+const flatpickrLocales = {
+	fr: French,
+};
 
 function escapeHtml(value) {
 	const div = document.createElement('div');
@@ -94,6 +100,60 @@ function initSelect2(selector, endpoint, placeholder) {
 	});
 }
 
+/**
+ * Date filters: store Y-m-d, display per WordPress user locale.
+ *
+ * @returns {{ from: import('flatpickr').Instance, to: import('flatpickr').Instance }}
+ */
+function initDatePickers(datePicker) {
+	const altFormat = (datePicker && datePicker.altFormat) || 'd/m/Y';
+	const placeholder = (datePicker && datePicker.placeholder) || 'dd/mm/yyyy';
+	const localeKey = datePicker && datePicker.locale ? datePicker.locale : 'en';
+	const locale = flatpickrLocales[localeKey] || undefined;
+
+	const shared = {
+		dateFormat: 'Y-m-d',
+		altInput: true,
+		altFormat,
+		allowInput: true,
+		disableMobile: true,
+		// Avoid WP-admin <select> styles crushing the month dropdown.
+		monthSelectorType: 'static',
+		locale,
+	};
+
+	const fromEl = document.getElementById('sillage-filter-from');
+	const toEl = document.getElementById('sillage-filter-to');
+
+	if (fromEl) {
+		fromEl.setAttribute('placeholder', placeholder);
+	}
+	if (toEl) {
+		toEl.setAttribute('placeholder', placeholder);
+	}
+
+	const fpTo = flatpickr('#sillage-filter-to', shared);
+	const fpFrom = flatpickr('#sillage-filter-from', {
+		...shared,
+		onChange(selectedDates) {
+			fpTo.set('minDate', selectedDates[0] || null);
+		},
+	});
+
+	fpTo.config.onChange.push(function (selectedDates) {
+		fpFrom.set('maxDate', selectedDates[0] || null);
+	});
+
+	// Flatpickr copies classes to altInput; ensure placeholder is visible there too.
+	[fpFrom, fpTo].forEach((fp) => {
+		if (fp.altInput) {
+			fp.altInput.setAttribute('placeholder', placeholder);
+		}
+	});
+
+	return { from: fpFrom, to: fpTo };
+}
+
 $(function () {
 	const cfg = window.sillageAdmin;
 	if (!cfg || !document.getElementById('sillage-logs')) {
@@ -101,6 +161,7 @@ $(function () {
 	}
 
 	const i18n = cfg.i18n || {};
+	const datePickers = initDatePickers(cfg.datePicker || {});
 
 	if ($.fn.select2) {
 		initSelect2('#sillage-filter-user', 'autocomplete/users', i18n.placeholderUser);
@@ -172,12 +233,21 @@ $(function () {
 					if (type !== 'display') {
 						return data;
 					}
-					return (
+					const badge =
 						'<span class="sil-badge">' +
 						escapeHtml(row.object_type_label) +
-						'</span>' +
-						escapeHtml(data)
-					);
+						'</span>';
+					const title = escapeHtml(data);
+					if (row.object_url) {
+						const a = document.createElement('a');
+						a.href = row.object_url;
+						a.target = '_blank';
+						a.rel = 'noopener noreferrer';
+						a.textContent = data;
+						a.title = i18n.viewContent || 'View content';
+						return badge + a.outerHTML;
+					}
+					return badge + title;
 				},
 			},
 			{ data: 'entry_date_display' },
@@ -215,8 +285,8 @@ $(function () {
 	$('#sillage-filter-reset').on('click', function () {
 		$('#sillage-filter-user').val(null).trigger('change');
 		$('#sillage-filter-content').val(null).trigger('change');
-		$('#sillage-filter-from').val('');
-		$('#sillage-filter-to').val('');
+		datePickers.from.clear();
+		datePickers.to.clear();
 		table.ajax.reload();
 	});
 

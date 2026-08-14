@@ -50,7 +50,8 @@ class Sillage_Database {
 	public static function table(): string {
 		global $wpdb;
 
-		return $wpdb->prefix . self::TABLE;
+		// esc_sql() keeps Plugin Check happy; prefix + fixed slug has no user input.
+		return esc_sql( $wpdb->prefix . self::TABLE );
 	}
 
 	/**

@@ -3,7 +3,7 @@ Contributors: lotfim
 Donate link: https://github.com/lotfim/
 Tags: analytics, log, visits, gdpr, privacy
 Requires at least: 6.8
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 8.3
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -29,6 +29,16 @@ Anonymous visitors are never logged. The WordPress admin area, archives, search 
 
 This plugin stores personal data (IP address, nicename, email) for logged-in users. Configure a retention period, consider IP anonymization, and disclose collection in your site's privacy policy. Uninstalling the plugin does not delete existing logs.
 
+= Third-party libraries =
+
+Bundled for Excel/PDF export (self-hosted, no CDN):
+
+* PhpSpreadsheet (MIT)
+* DomPDF (LGPL-2.1)
+* DataTables (MIT)
+* Select2 (MIT)
+* Flatpickr (MIT)
+
 == Installation ==
 
 1. Upload the `sillage` folder to `/wp-content/plugins/`
@@ -52,4 +62,4 @@ No. Exit time is best-effort, sent with `navigator.sendBeacon()` when the tab is
 == Changelog ==
 
 = 1.0.0 =
-* Initial release.
+* Initial release: visit logging for logged-in users, admin filters, CSV/Excel/PDF export, GDPR settings.

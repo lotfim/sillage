@@ -27,11 +27,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 		<div>
 			<label for="sillage-filter-from" class="sil-block sil-mb-1 sil-font-medium"><?php echo esc_html__( 'From', 'sillage' ); ?></label>
-			<input type="date" id="sillage-filter-from" class="sil-border sil-border-gray-300 sil-rounded sil-px-2 sil-py-1" />
+			<input type="text" id="sillage-filter-from" class="sillage-datepicker sil-border sil-border-gray-300 sil-rounded sil-px-2 sil-py-1 sil-w-36" autocomplete="off" />
 		</div>
 		<div>
 			<label for="sillage-filter-to" class="sil-block sil-mb-1 sil-font-medium"><?php echo esc_html__( 'To', 'sillage' ); ?></label>
-			<input type="date" id="sillage-filter-to" class="sil-border sil-border-gray-300 sil-rounded sil-px-2 sil-py-1" />
+			<input type="text" id="sillage-filter-to" class="sillage-datepicker sil-border sil-border-gray-300 sil-rounded sil-px-2 sil-py-1 sil-w-36" autocomplete="off" />
 		</div>
 		<div class="sil-flex sil-gap-2">
 			<button type="button" id="sillage-filter-apply" class="button button-primary"><?php echo esc_html__( 'Apply filters', 'sillage' ); ?></button>

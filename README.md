@@ -106,6 +106,7 @@ not a REST route.
 production):**
 - DataTables (server-side processing mode)
 - Select2 (autocomplete)
+- Flatpickr (date range filters; display format follows the WordPress user locale)
 
 **CSS:**
 - Tailwind CSS v3 (compiled, `sil-` prefix)
@@ -116,7 +117,21 @@ production):**
 composer install
 npm install
 npm run build       # compiles Tailwind + bundles admin JS
+composer run lint   # PHPCS (WPCS)
 ```
+
+### Release zip (WP.org)
+
+Exclude development files via `.distignore`, then from the plugin directory:
+
+```bash
+composer install --no-dev --optimize-autoloader
+npm ci && npm run build
+wp dist-archive . ./sillage.zip --plugin-dirname=sillage
+```
+
+The zip must include `vendor/` and built `admin/js` + `admin/css`, but not
+`src/`, `node_modules/`, `.cursor/`, or the internal specs.
 
 See `TECH-STACK.md` for the full stack rationale, and
 `sillage-plugin-specs.txt` for the functional specification.
