@@ -48,6 +48,10 @@ class Sillage_Exporter {
 
 		@set_time_limit( 120 ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- shared hosting may forbid this.
 
+		if ( Sillage_Export_Format::Csv !== $format ) {
+			sillage_load_vendor();
+		}
+
 		match ( $format ) {
 			Sillage_Export_Format::Csv  => self::stream_csv( $filters ),
 			Sillage_Export_Format::Xlsx => self::stream_xlsx( $filters ),

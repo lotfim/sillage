@@ -180,6 +180,13 @@ class Sillage_Admin {
 					'paginateLast'       => __( 'Last', 'sillage' ),
 					'paginateNext'       => __( 'Next', 'sillage' ),
 					'paginatePrev'       => __( 'Previous', 'sillage' ),
+					'searching'          => __( 'Searching…', 'sillage' ),
+					'noResults'          => __( 'No results found', 'sillage' ),
+					'errorLoading'       => __( 'The results could not be loaded.', 'sillage' ),
+					'loadingMore'        => __( 'Loading more results…', 'sillage' ),
+					'removeAllItems'     => __( 'Remove all items', 'sillage' ),
+					/* translators: %d: number of characters still required. */
+					'inputTooShort'      => __( 'Please enter %d or more characters.', 'sillage' ),
 				),
 			)
 		);

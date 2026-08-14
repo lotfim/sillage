@@ -68,7 +68,8 @@ class Sillage_Rest {
 				'args'                => array(
 					'search' => array(
 						'type'              => 'string',
-						'required'          => true,
+						'required'          => false,
+						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
@@ -85,7 +86,8 @@ class Sillage_Rest {
 				'args'                => array(
 					'search' => array(
 						'type'              => 'string',
-						'required'          => true,
+						'required'          => false,
+						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
@@ -221,21 +223,21 @@ class Sillage_Rest {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function autocomplete_users( WP_REST_Request $request ) {
-		$search = (string) $request->get_param( 'search' );
+		$search = trim( (string) $request->get_param( 'search' ) );
 
-		if ( strlen( $search ) < 2 ) {
-			return new WP_Error( 'sillage_search_too_short', __( 'Search term is too short.', 'sillage' ), array( 'status' => 400 ) );
-		}
-
-		$query = new WP_User_Query(
-			array(
-				'search'         => '*' . $search . '*',
-				'search_columns' => array( 'user_login', 'user_nicename', 'user_email', 'display_name' ),
-				'number'         => 20,
-				'fields'         => array( 'ID', 'user_nicename', 'user_email' ),
-			)
+		$args = array(
+			'number'  => 20,
+			'orderby' => 'display_name',
+			'order'   => 'ASC',
+			'fields'  => 'all',
 		);
 
+		if ( strlen( $search ) >= 1 ) {
+			$args['search']         = '*' . $search . '*';
+			$args['search_columns'] = array( 'user_login', 'user_nicename', 'user_email', 'display_name' );
+		}
+
+		$query   = new WP_User_Query( $args );
 		$results = array();
 
 		foreach ( $query->get_results() as $user ) {
@@ -258,35 +260,41 @@ class Sillage_Rest {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function autocomplete_pages( WP_REST_Request $request ) {
-		$search = (string) $request->get_param( 'search' );
+		global $wpdb;
 
-		if ( strlen( $search ) < 2 ) {
-			return new WP_Error( 'sillage_search_too_short', __( 'Search term is too short.', 'sillage' ), array( 'status' => 400 ) );
+		$search     = trim( (string) $request->get_param( 'search' ) );
+		$post_types = array_values( get_post_types( array( 'public' => true ), 'names' ) );
+
+		if ( array() === $post_types ) {
+			return new WP_REST_Response( array( 'results' => array() ) );
 		}
 
-		$post_types = get_post_types( array( 'public' => true ), 'names' );
+		$placeholders = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
+		$sql          = "SELECT ID, post_title, post_type FROM {$wpdb->posts} WHERE post_status = %s AND post_type IN ({$placeholders})"; // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders are %s only.
+		$args         = array_merge( array( 'publish' ), $post_types );
 
-		$query = new WP_Query(
-			array(
-				's'              => $search,
-				'post_type'      => array_values( $post_types ),
-				'post_status'    => 'publish',
-				'posts_per_page' => 20,
-				'no_found_rows'  => true,
-			)
-		);
+		if ( '' !== $search ) {
+			$sql   .= ' AND post_title LIKE %s';
+			$args[] = '%' . $wpdb->esc_like( $search ) . '%';
+		}
+
+		$sql .= ' ORDER BY post_title ASC LIMIT 20';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- typed placeholders; title-only autocomplete.
+		$rows = $wpdb->get_results( $wpdb->prepare( $sql, ...$args ) );
 
 		$results = array();
 
-		foreach ( $query->posts as $post ) {
-			$type  = get_post_type_object( $post->post_type );
-			$label = $type ? $type->labels->singular_name : $post->post_type;
+		foreach ( (array) $rows as $row ) {
+			$type  = get_post_type_object( $row->post_type );
+			$label = $type ? $type->labels->singular_name : $row->post_type;
+			$title = $row->post_title;
 
 			$results[] = array(
-				'id'    => (int) $post->ID,
-				'title' => get_the_title( $post ),
-				'type'  => $post->post_type,
-				'text'  => get_the_title( $post ) . ' (' . $label . ')',
+				'id'    => (int) $row->ID,
+				'title' => $title,
+				'type'  => $row->post_type,
+				'text'  => $title . ' (' . $label . ')',
 			);
 		}
 

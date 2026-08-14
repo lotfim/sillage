@@ -1,7 +1,12 @@
 import './sillage-admin.css';
 import $ from 'jquery';
-import 'select2';
+import select2 from 'select2';
 import DataTable from 'datatables.net-dt';
+
+// Select2's CJS build exports a factory; a side-effect import does not attach $.fn.select2.
+if (typeof select2 === 'function' && !$.fn.select2) {
+	select2(window, $);
+}
 
 function escapeHtml(value) {
 	const div = document.createElement('div');
@@ -18,17 +23,49 @@ function currentFilters() {
 	};
 }
 
+function select2Language(i18n) {
+	return {
+		errorLoading() {
+			return i18n.errorLoading || 'The results could not be loaded.';
+		},
+		inputTooShort(args) {
+			const remaining = args.minimum - args.input.length;
+			return (i18n.inputTooShort || 'Please enter %d or more characters.').replace(
+				'%d',
+				String(remaining)
+			);
+		},
+		loadingMore() {
+			return i18n.loadingMore || 'Loading more results…';
+		},
+		noResults() {
+			return i18n.noResults || 'No results found';
+		},
+		searching() {
+			return i18n.searching || 'Searching…';
+		},
+		removeAllItems() {
+			return i18n.removeAllItems || 'Remove all items';
+		},
+	};
+}
+
 function initSelect2(selector, endpoint, placeholder) {
 	const cfg = window.sillageAdmin;
+	const i18n = (cfg && cfg.i18n) || {};
+	let xhr;
 
 	$(selector).select2({
 		allowClear: true,
 		placeholder,
-		width: 'style',
+		width: '100%',
+		dropdownParent: $(document.body),
+		language: select2Language(i18n),
 		ajax: {
 			url: cfg.restUrl + endpoint,
 			dataType: 'json',
-			delay: 250,
+			delay: 80,
+			cache: true,
 			headers: {
 				'X-WP-Nonce': cfg.restNonce,
 			},
@@ -36,10 +73,24 @@ function initSelect2(selector, endpoint, placeholder) {
 				return { search: params.term || '' };
 			},
 			processResults(data) {
-				return { results: data.results || [] };
+				return { results: (data && data.results) || [] };
+			},
+			transport(params, success, failure) {
+				if (xhr && xhr.readyState !== 4) {
+					xhr.abort();
+				}
+				xhr = $.ajax(params);
+				xhr.then(success);
+				xhr.fail(function (jqXHR, textStatus) {
+					if (textStatus === 'abort') {
+						return;
+					}
+					failure(jqXHR, textStatus);
+				});
+				return xhr;
 			},
 		},
-		minimumInputLength: 2,
+		minimumInputLength: 0,
 	});
 }
 
@@ -51,8 +102,10 @@ $(function () {
 
 	const i18n = cfg.i18n || {};
 
-	initSelect2('#sillage-filter-user', 'autocomplete/users', i18n.placeholderUser);
-	initSelect2('#sillage-filter-content', 'autocomplete/pages', i18n.placeholderContent);
+	if ($.fn.select2) {
+		initSelect2('#sillage-filter-user', 'autocomplete/users', i18n.placeholderUser);
+		initSelect2('#sillage-filter-content', 'autocomplete/pages', i18n.placeholderContent);
+	}
 
 	const table = new DataTable('#sillage-logs', {
 		serverSide: true,

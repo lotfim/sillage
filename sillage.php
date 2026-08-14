@@ -30,9 +30,32 @@ define( 'SILLAGE_PLUGIN_FILE', __FILE__ );
 define( 'SILLAGE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SILLAGE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-$sillage_autoload = SILLAGE_PLUGIN_DIR . 'vendor/autoload.php';
-if ( file_exists( $sillage_autoload ) ) {
-	require_once $sillage_autoload;
+/**
+ * Load Composer autoload (PhpSpreadsheet / DomPDF) only when needed.
+ *
+ * Must not run on front-office or autocomplete requests: vendor/files
+ * autoload of thecodingmachine/safe is expensive on every hit.
+ *
+ * @since 1.0.0
+ * @return bool
+ */
+function sillage_load_vendor(): bool {
+	static $loaded = false;
+
+	if ( $loaded ) {
+		return true;
+	}
+
+	$path = SILLAGE_PLUGIN_DIR . 'vendor/autoload.php';
+
+	if ( ! file_exists( $path ) ) {
+		return false;
+	}
+
+	require_once $path;
+	$loaded = true;
+
+	return true;
 }
 
 /**
